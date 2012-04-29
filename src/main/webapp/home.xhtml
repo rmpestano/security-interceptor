@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <f:view contentType="text/html">
+
+        <h:head>
+            <title>CDI Interceptor</title>
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+        </h:head>
+
+        <h:body>
+            <h:form id="mainForm">
+                <p:growl autoUpdate="true" life="1000"/>
+                <p:panel header="Exemplo Interceptors" style="width: 800px;margin: 20px" >
+                    <div align="right">
+                        <p:commandButton value="Resetar" ajax="false" action="#{perfilMBean.reset}"/>
+                    </div>
+                    <p:accordionPanel id="accordian">
+                        <p:tab id="perfilTab" title="Gerenciar Perfis">
+                            <p:outputPanel id="perfilPanel">
+
+                                <p:fieldset legend="Associar Perfis">
+                                    <p:pickList value="#{perfilMBean.perfis}" var="p" 
+                                                itemLabel="#{p.nome}" onTransfer="onListChange();" 
+                                                itemValue="#{p}" converter="perfilConverter" >
+                                        <f:facet name="sourceCaption">Perfis Disponíveis</f:facet>
+                                        <f:facet name="targetCaption">Perfis Utilizados</f:facet>
+                                    </p:pickList>
+                                    <p:remoteCommand name="onListChange" action="#{perfilMBean.associarPerfis}" process=":mainForm:accordian:perfilPanel" update=":mainForm:accordian:perfilPanel" oncomplete="onListChanged();"/>
+                                    <p:remoteCommand name="onListChanged" action="#{perfilMBean.atualizaPicklist}" process=":mainForm:accordian:perfilPanel" update=":mainForm:accordian:perfilPanel"/>
+                                </p:fieldset>
+
+                                <p:fieldset legend="Lista de Perfis">
+                                    <p:dataTable id="perfilTable" value="#{perfilMBean.perfisDisponiveis}" var="p">
+                                        <p:column headerText="Nome" sortBy="#{p.nome}">
+                                            <h:outputText value="#{p.nome}"/>
+                                        </p:column>
+                                        <p:column >
+                                            <p:commandButton value="Remover" action="#{perfilMBean.removerPerfil(p)}"  update=":mainForm:accordian:perfilPanel"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:fieldset>
+
+                            </p:outputPanel>
+                        </p:tab>
+                        <p:tab id="metodoTab" title="Executar Métodos">
+
+                        </p:tab>
+                    </p:accordionPanel>
+
+                </p:panel>
+            </h:form>  
+            <style type="text/css">
+
+                .ui-widget {
+                    font-size: 12px !important;
+                }
+            </style>
+        </h:body>
+    </f:view>
+</html>
