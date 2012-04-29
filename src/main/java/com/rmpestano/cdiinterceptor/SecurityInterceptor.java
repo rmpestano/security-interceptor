@@ -8,8 +8,9 @@ import com.jsf.conventions.qualifier.SecurityMethod;
 import com.jsf.conventions.qualifier.UsuarioLogado;
 import com.jsf.conventions.util.MessagesController;
 import com.rmpestano.cdiinterceptor.model.Perfil;
+import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Set;
+import java.util.List;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
@@ -21,10 +22,10 @@ import javax.interceptor.InvocationContext;
  */
 @Interceptor//anotação que define esta classe como um interceptor
 @SecurityMethod //qualificador que define quais metodos o interceptor ira atuar
-public class SecurityInterceptor {
+public class SecurityInterceptor implements Serializable{
 
     @Inject @UsuarioLogado
-    private Set<Perfil> perfisUsuario;
+    private List<Perfil> perfisUsuario;
 
     @AroundInvoke
     public Object checkPermission(InvocationContext ic) throws Exception {

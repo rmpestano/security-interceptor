@@ -1,5 +1,7 @@
 package com.rmpestano.cdiinterceptor.model;
 
+import java.io.Serializable;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -11,7 +13,7 @@ package com.rmpestano.cdiinterceptor.model;
  * @author rmpestano
  * 
  */
-public class Perfil {
+public class Perfil implements Serializable{
     
     private String nome;
     public static final String PERFIL_USUARIO = "perfilUsuario";

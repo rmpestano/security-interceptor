@@ -4,6 +4,7 @@
  */
 package com.jsf.conventions.qualifier;
 
+import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -17,7 +18,7 @@ import javax.inject.Qualifier;
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE,ElementType.FIELD,ElementType.PARAMETER})
-public  @interface UsuarioLogado {
+public @interface UsuarioLogado {
     
      
 }

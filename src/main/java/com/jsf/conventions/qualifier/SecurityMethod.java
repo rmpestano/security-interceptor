@@ -25,7 +25,6 @@ public  @interface SecurityMethod {
     
     @Nonbinding 
     String[] rolesAllowed() default {};
-   
     String message() default "Você não tem permissão para executar esta ação.";
 }
 
