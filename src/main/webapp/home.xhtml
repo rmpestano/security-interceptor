@@ -43,18 +43,42 @@
                                         <p:column >
                                             <p:commandButton value="Remover" action="#{perfilMBean.removerPerfil(p)}"  update=":mainForm:accordian:perfilPanel :mainForm:growl"/>
                                         </p:column>
+                                        <f:facet name="footer">
+                                            <center><p:commandButton value="Novo" immediate="true" process="@none" update=":addPerfilForm:addPerfilPanel" oncomplete="perfilDlg.show()" /></center>
+                                        </f:facet>
                                     </p:dataTable>
                                 </p:fieldset>
 
                             </p:outputPanel>
                         </p:tab>
-                        <p:tab id="metodoTab" title="Executar Métodos">
-
-                        </p:tab>
                     </p:accordionPanel>
 
                 </p:panel>
             </h:form>  
+            
+            <p:dialog widgetVar="perfilDlg" header="Inlusão de Perfil" height="200" width="450" modal="true" showEffect="clip" hideEffect="explode">
+                <h:form id="addPerfilForm">
+                    <h:panelGroup id="addPerfilPanel" layout="block" style="padding: 10px">
+                        <p:fieldset legend="Incluir novo perfil">
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Nome"/>
+                                <h:inputText value="#{perfilMBean.perfil.nome}" required="true" requiredMessage="Informe o nome do perfil."/>
+                            </h:panelGrid>
+                            <center>
+                                <p:commandButton value="Adicionar" action="#{perfilMBean.adicionarPerfil}" process="addPerfilForm:addPerfilPanel" update=":mainForm:accordian:perfilPanel :mainForm:growl" oncomplete="closeDialog(args)"/>
+                            </center>
+                        </p:fieldset>
+                    </h:panelGroup>
+                </h:form>   
+                <script type="text/javascript">
+                    
+                    function closeDialog(args){
+                        if(!args.validationFailed){
+                            perfilDlg.hide();
+                        }
+                    }
+                </script>
+            </p:dialog>
             <style type="text/css">
 
                 .ui-widget {

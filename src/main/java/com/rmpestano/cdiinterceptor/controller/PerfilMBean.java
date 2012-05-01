@@ -15,10 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
+import javax.enterprise.inject.New;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.myfaces.extensions.cdi.core.api.scope.conversation.ViewAccessScoped;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DualListModel;
 
 /**
@@ -31,6 +33,7 @@ public class PerfilMBean implements Serializable{
 
  
     private List<Perfil> perfisDisponiveis;
+    @Inject @New
     private Perfil perfil;
     private DualListModel<Perfil> perfis;  
     @Inject
@@ -48,8 +51,7 @@ public class PerfilMBean implements Serializable{
         perfisDisponiveis.add(new Perfil(ConstantUtils.VISITANTE));
         perfisDisponiveis.add(new Perfil(ConstantUtils.USER));
         perfis = new DualListModel<Perfil>(perfisDisponiveis, perfisUtilizados);
-        this.atualizaPerfilUsuario();
-        
+        perfilChangeEvent.fire(new PerfilChange(perfisUtilizados));
     }
 
     public List<Perfil> getPerfisDisponiveis() {
@@ -80,8 +82,13 @@ public class PerfilMBean implements Serializable{
     
     @SecurityMethod(rolesAllowed={ConstantUtils.ADMIN},message="Somente o perfil de administrador tem permissão para executar esta ação")
     public void adicionarPerfil(){
+        if(perfisDisponiveis.contains(perfil) || perfisUsuario.contains(perfil)){
+            MessagesController.addError("Perfil já existe.");
+            RequestContext.getCurrentInstance().addCallbackParam("validationFailed", true);//callback Param to keep dialog open
+            return;
+        }
         perfisDisponiveis.add(perfil);
-        perfis.getSource().add(perfil);
+        perfil = new Perfil();
         MessagesController.addInfo("Perfil incluido com sucesso!");
          
     }
@@ -89,7 +96,6 @@ public class PerfilMBean implements Serializable{
     @SecurityMethod(rolesAllowed=ConstantUtils.ADMIN)
     public void removerPerfil(Perfil p){
         perfisDisponiveis.remove(p);
-        perfis.getSource().remove(p);
         MessagesController.addInfo("Perfil removido com sucesso!");
     }
     

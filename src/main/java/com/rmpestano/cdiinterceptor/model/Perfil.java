@@ -17,8 +17,13 @@ public class Perfil implements Serializable{
     
     private String nome;
     public static final String PERFIL_USUARIO = "perfilUsuario";
+
+    public Perfil() {
+    }
     
 
+    
+    
     public Perfil(String nome) {
         this.nome = nome;
     }
