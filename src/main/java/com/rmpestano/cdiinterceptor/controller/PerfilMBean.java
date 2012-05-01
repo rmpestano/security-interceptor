@@ -88,6 +88,7 @@ public class PerfilMBean implements Serializable{
             return;
         }
         perfisDisponiveis.add(perfil);
+        atualizaPicklist();
         perfil = new Perfil();
         MessagesController.addInfo("Perfil incluido com sucesso!");
          
@@ -96,6 +97,7 @@ public class PerfilMBean implements Serializable{
     @SecurityMethod(rolesAllowed=ConstantUtils.ADMIN)
     public void removerPerfil(Perfil p){
         perfisDisponiveis.remove(p);
+        atualizaPicklist();
         MessagesController.addInfo("Perfil removido com sucesso!");
     }
     
@@ -117,7 +119,7 @@ public class PerfilMBean implements Serializable{
          MessagesController.addInfo("Perfil alterado com sucesso!");
     }
     
-    public String reset() throws Throwable{
+    public String reset() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "home.faces?faces-redirect=true";
     }
