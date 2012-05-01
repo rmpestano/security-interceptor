@@ -6,20 +6,20 @@ package com.rmpestano.producer;
 
 import com.jsf.conventions.qualifier.UsuarioLogado;
 import com.rmpestano.cdiinterceptor.model.Perfil;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 
 /**
  *
  * @author rmpestano
  */
-public class PerfilProducer {
+public class PerfilProducer implements Serializable{
     
-    @Produces @UsuarioLogado @Named(value="perfis") 
+    @Produces @UsuarioLogado @RequestScoped 
     public List<Perfil> perfisUsuarioLogado(){
         List<Perfil> perfis = (List<Perfil>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(Perfil.PERFIL_USUARIO);
         if(perfis != null){

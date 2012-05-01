@@ -15,23 +15,23 @@
 
         <h:body>
             <h:form id="mainForm">
-                <p:growl autoUpdate="true" life="1000"/>
+                <p:growl id="growl"  life="1500"/>
                 <p:panel header="Exemplo Interceptors" style="width: 800px;margin: 20px" >
                     <div align="right">
-                        <p:commandButton value="Resetar" ajax="false" action="#{perfilMBean.reset}"/>
+                        <p:commandButton value="Resetar" ajax="false" immediate="true" action="#{perfilMBean.reset}"/>
                     </div>
                     <p:accordionPanel id="accordian">
                         <p:tab id="perfilTab" title="Gerenciar Perfis">
                             <p:outputPanel id="perfilPanel">
 
                                 <p:fieldset legend="Associar Perfis">
-                                    <p:pickList value="#{perfilMBean.perfis}" var="p" 
+                                    <p:pickList value="#{perfilMBean.perfis}" var="p"
                                                 itemLabel="#{p.nome}" onTransfer="onListChange();" 
                                                 itemValue="#{p}" converter="perfilConverter" >
                                         <f:facet name="sourceCaption">Perfis Disponíveis</f:facet>
                                         <f:facet name="targetCaption">Perfis Utilizados</f:facet>
                                     </p:pickList>
-                                    <p:remoteCommand name="onListChange" action="#{perfilMBean.associarPerfis}" process=":mainForm:accordian:perfilPanel" update=":mainForm:accordian:perfilPanel" oncomplete="onListChanged();"/>
+                                    <p:remoteCommand name="onListChange" action="#{perfilMBean.actionPicklist}" process=":mainForm:accordian:perfilPanel" update=":mainForm:accordian:perfilPanel :mainForm:growl" oncomplete="onListChanged()"/>
                                     <p:remoteCommand name="onListChanged" action="#{perfilMBean.atualizaPicklist}" process=":mainForm:accordian:perfilPanel" update=":mainForm:accordian:perfilPanel"/>
                                 </p:fieldset>
 
@@ -41,7 +41,7 @@
                                             <h:outputText value="#{p.nome}"/>
                                         </p:column>
                                         <p:column >
-                                            <p:commandButton value="Remover" action="#{perfilMBean.removerPerfil(p)}"  update=":mainForm:accordian:perfilPanel"/>
+                                            <p:commandButton value="Remover" action="#{perfilMBean.removerPerfil(p)}"  update=":mainForm:accordian:perfilPanel :mainForm:growl"/>
                                         </p:column>
                                     </p:dataTable>
                                 </p:fieldset>

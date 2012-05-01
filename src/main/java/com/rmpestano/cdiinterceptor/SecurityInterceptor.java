@@ -56,11 +56,13 @@ public class SecurityInterceptor implements Serializable{
         if (perfisUsuario == null || perfisUsuario.isEmpty()) {
             return false;
         }
+        
         for (String role : rolesAllowed) {
-            if (perfisUsuario.contains(role)) {
-                return true;
+            //constains compara pelo nome do perfil - idem a fazer 2 fors aninhados comparando pelo nome do perfil
+            if (perfisUsuario.contains(new Perfil(role))) {
+                return true;//nome de perfil encontrado
             }
-        }
+        }//nome e perfil não encontrado
         return false;
     }
 

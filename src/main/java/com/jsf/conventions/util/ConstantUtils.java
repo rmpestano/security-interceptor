@@ -10,8 +10,9 @@ package com.jsf.conventions.util;
  */
 public interface ConstantUtils {
     
-    public static final String ADMIN = "administrador";
+    public static final String ADMIN = "Administrador";
     public static final String VISITANTE = "visitante";
+    public static final String USER = "Usuário";
     
     
 }

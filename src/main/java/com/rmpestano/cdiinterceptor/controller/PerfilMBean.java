@@ -9,10 +9,12 @@ import com.jsf.conventions.qualifier.UsuarioLogado;
 import com.jsf.conventions.util.ConstantUtils;
 import com.jsf.conventions.util.MessagesController;
 import com.rmpestano.cdiinterceptor.model.Perfil;
+import com.rmpestano.cdiinterceptor.observer.PerfilChange;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.enterprise.event.Event;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,19 +29,26 @@ import org.primefaces.model.DualListModel;
 @Named(value = "perfilMBean")
 public class PerfilMBean implements Serializable{
 
-    @Inject @UsuarioLogado
-    private List<Perfil> perfisUtilizados;
+ 
     private List<Perfil> perfisDisponiveis;
     private Perfil perfil;
     private DualListModel<Perfil> perfis;  
+    @Inject
+    private Event<PerfilChange> perfilChangeEvent;
+    @Inject @UsuarioLogado
+    private List<Perfil> perfisUsuario;
+    
     
     @PostConstruct
     public void inicializaPerfis(){
         perfisDisponiveis = new ArrayList<Perfil>();
-        perfisDisponiveis.add(new Perfil(ConstantUtils.ADMIN));
+        List<Perfil> perfisUtilizados = new ArrayList<Perfil>();
+        Perfil admin = new Perfil(ConstantUtils.ADMIN);
+        perfisUtilizados.add(admin);
         perfisDisponiveis.add(new Perfil(ConstantUtils.VISITANTE));
-        perfisDisponiveis.add(new Perfil("Usuário"));
+        perfisDisponiveis.add(new Perfil(ConstantUtils.USER));
         perfis = new DualListModel<Perfil>(perfisDisponiveis, perfisUtilizados);
+        this.atualizaPerfilUsuario();
         
     }
 
@@ -59,9 +68,6 @@ public class PerfilMBean implements Serializable{
         this.perfil = perfil;
     }
     
-    public List<Perfil> getPerfisUtilizados() {
-        return perfisUtilizados;
-    }
 
     public DualListModel<Perfil> getPerfis() {
         return perfis;
@@ -76,27 +82,37 @@ public class PerfilMBean implements Serializable{
     public void adicionarPerfil(){
         perfisDisponiveis.add(perfil);
         perfis.getSource().add(perfil);
+        MessagesController.addInfo("Perfil incluido com sucesso!");
+         
     }
     
     @SecurityMethod(rolesAllowed=ConstantUtils.ADMIN)
     public void removerPerfil(Perfil p){
         perfisDisponiveis.remove(p);
         perfis.getSource().remove(p);
-        
+        MessagesController.addInfo("Perfil removido com sucesso!");
     }
-
+    
+    
     @SecurityMethod(rolesAllowed=ConstantUtils.ADMIN)
-    public void associarPerfis(){
-         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(Perfil.PERFIL_USUARIO,perfis.getTarget());
-         MessagesController.addInfo("Perfil alterado com sucesso!");
+    public void actionPicklist(){
+         setPerfisDisponiveis(perfis.getSource());
+         atualizaPerfilUsuario();
     }
     
     public void atualizaPicklist(){
-         perfis = new DualListModel<Perfil>(perfisDisponiveis, perfisUtilizados);
+        perfis.setSource(perfisDisponiveis);
+        perfis.setTarget(perfisUsuario);
+    }
+     
+    
+    private void atualizaPerfilUsuario(){
+         perfilChangeEvent.fire(new PerfilChange(perfis.getTarget()));
+         MessagesController.addInfo("Perfil alterado com sucesso!");
     }
     
-    public String reset(){
-        FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        return null;
+    public String reset() throws Throwable{
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "home.faces?faces-redirect=true";
     }
 }
