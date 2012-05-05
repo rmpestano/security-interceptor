@@ -4,9 +4,9 @@
  */
 package com.rmpestano.cdiinterceptor;
 
-import com.jsf.conventions.qualifier.SecurityMethod;
-import com.jsf.conventions.qualifier.UsuarioLogado;
-import com.jsf.conventions.util.MessagesController;
+import com.rmpestano.cdiinterceptor.qualifier.SecurityMethod;
+import com.rmpestano.cdiinterceptor.qualifier.UsuarioLogado;
+import com.rmpestano.cdiinterceptor.util.MessagesController;
 import com.rmpestano.cdiinterceptor.model.Perfil;
 import java.io.Serializable;
 import java.lang.reflect.Method;

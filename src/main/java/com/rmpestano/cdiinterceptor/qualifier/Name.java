@@ -34,7 +34,7 @@
  * ou escreva para a Fundação do Software Livre (FSF) Inc.,
  * 51 Franklin St, Fifth Floor, Boston, MA 02111-1301, USA.
  */
-package com.jsf.conventions.qualifier;
+package com.rmpestano.cdiinterceptor.qualifier;
 
 import static java.lang.annotation.ElementType.*;
 import java.lang.annotation.Inherited;

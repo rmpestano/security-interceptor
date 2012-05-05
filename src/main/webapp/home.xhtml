@@ -12,10 +12,10 @@
             <title>CDI Interceptor</title>
             <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
         </h:head>
-
         <h:body>
+            <ui:param name="g" value=":mainForm:growl"/>
             <h:form id="mainForm">
-                <p:growl id="growl"  life="1500"/>
+                <p:growl id="growl" escape="false"/>
                 <p:panel header="Exemplo Interceptors" style="width: 800px;margin: 20px" >
                     <div align="right">
                         <p:commandButton value="Resetar" ajax="false" immediate="true" action="#{perfilMBean.reset}"/>
@@ -24,12 +24,12 @@
                         <p:tab id="perfilTab" title="Gerenciar Perfis">
                             <p:outputPanel id="perfilPanel">
 
-                                <p:fieldset legend="Associar Perfis">
+                                <p:fieldset legend="Associar Perfis (somente admin pode executar esta ação)">
                                     <p:pickList value="#{perfilMBean.perfis}" var="p"
                                                 itemLabel="#{p.nome}" onTransfer="onListChange();" 
                                                 itemValue="#{p}" converter="perfilConverter" >
                                         <f:facet name="sourceCaption">Perfis Disponíveis</f:facet>
-                                        <f:facet name="targetCaption">Perfis Utilizados</f:facet>
+                                        <f:facet name="targetCaption">Perfis Associados</f:facet>
                                     </p:pickList>
                                     <p:remoteCommand name="onListChange" action="#{perfilMBean.actionPicklist}" process=":mainForm:accordian:perfilPanel" update=":mainForm:accordian:perfilPanel :mainForm:growl" oncomplete="onListChanged()"/>
                                     <p:remoteCommand name="onListChanged" action="#{perfilMBean.atualizaPicklist}" process=":mainForm:accordian:perfilPanel" update=":mainForm:accordian:perfilPanel"/>
@@ -50,6 +50,23 @@
                                 </p:fieldset>
 
                             </p:outputPanel>
+                        </p:tab>
+                        <p:tab id="actionTab" title="Executar Métodos">
+                            <h:panelGrid columns="2" cellspacing="15" style="text-align: right">
+                                <h:outputText value="Administrador:"/>
+                                <p:commandButton value="Executar" id="bt1" action="#{perfilMBean.metodoAdministrador}" process="@this" update="#{g}">
+                                    <p:tooltip for=":mainForm:accordian:bt1" value="Você só poderá executar este metodo se o perfil administrador estiver entre os perfis associados" showEffect="clip"/>
+                                </p:commandButton>
+                                <h:outputText value="Usuario:"/>
+                                <p:commandButton value="Executar" id="bt2" action="#{perfilMBean.metodoUsuario}" process="@this" update="#{g}">
+                                    <p:tooltip for=":mainForm:accordian:bt2" value="Você só poderá executar este metodo se o perfil  Usuário estiverem entre os perfis associados" showEffect="clip"/>
+                                </p:commandButton>
+                                <h:outputText value="Usuario e Administrador:"/>
+                                <p:commandButton value="Executar" id="bt3" action="#{perfilMBean.metodoAdministradorUsuario}" process="@this" update="#{g}">
+                                    <p:tooltip for=":mainForm:accordian:bt3" value="Você só poderá executar este metodo se o perfil administrador e/ou Usuário estiverem entre os perfis associados" showEffect="clip"/>
+                                </p:commandButton>
+                            </h:panelGrid>
+                            
                         </p:tab>
                     </p:accordionPanel>
 

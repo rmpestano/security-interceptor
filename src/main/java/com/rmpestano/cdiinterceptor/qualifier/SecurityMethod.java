@@ -2,14 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jsf.conventions.qualifier;
+package com.rmpestano.cdiinterceptor.qualifier;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import javax.enterprise.inject.Stereotype;
 import javax.enterprise.util.Nonbinding;
 import javax.interceptor.InterceptorBinding;
 
@@ -25,6 +24,7 @@ public  @interface SecurityMethod {
     
     @Nonbinding 
     String[] rolesAllowed() default {};
+    @Nonbinding 
     String message() default "Você não tem permissão para executar esta ação.";
 }
 

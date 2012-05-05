@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jsf.conventions.converter;
+package com.rmpestano.cdiinterceptor.converter;
 
 import com.rmpestano.cdiinterceptor.model.Perfil;
 import javax.faces.component.UIComponent;

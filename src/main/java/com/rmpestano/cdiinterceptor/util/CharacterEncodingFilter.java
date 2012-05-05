@@ -1,4 +1,4 @@
-package com.jsf.conventions.util;
+package com.rmpestano.cdiinterceptor.util;
 
 
 

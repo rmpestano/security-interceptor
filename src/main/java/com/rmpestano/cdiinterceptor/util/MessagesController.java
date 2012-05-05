@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.jsf.conventions.util;
+package com.rmpestano.cdiinterceptor.util;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;

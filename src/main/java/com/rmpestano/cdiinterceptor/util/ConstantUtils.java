@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jsf.conventions.util;
+package com.rmpestano.cdiinterceptor.util;
 
 /**
  *

@@ -4,7 +4,7 @@
  */
 package com.rmpestano.producer;
 
-import com.jsf.conventions.qualifier.UsuarioLogado;
+import com.rmpestano.cdiinterceptor.qualifier.UsuarioLogado;
 import com.rmpestano.cdiinterceptor.model.Perfil;
 import java.io.Serializable;
 import java.util.ArrayList;

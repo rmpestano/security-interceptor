@@ -4,16 +4,17 @@
  */
 package com.rmpestano.cdiinterceptor.controller;
 
-import com.jsf.conventions.qualifier.SecurityMethod;
-import com.jsf.conventions.qualifier.UsuarioLogado;
-import com.jsf.conventions.util.ConstantUtils;
-import com.jsf.conventions.util.MessagesController;
+import com.rmpestano.cdiinterceptor.qualifier.SecurityMethod;
+import com.rmpestano.cdiinterceptor.qualifier.UsuarioLogado;
+import com.rmpestano.cdiinterceptor.util.ConstantUtils;
+import com.rmpestano.cdiinterceptor.util.MessagesController;
 import com.rmpestano.cdiinterceptor.model.Perfil;
 import com.rmpestano.cdiinterceptor.observer.PerfilChange;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.New;
 import javax.faces.context.FacesContext;
@@ -80,7 +81,7 @@ public class PerfilMBean implements Serializable{
     }
 
     
-    @SecurityMethod(rolesAllowed={ConstantUtils.ADMIN},message="Somente o perfil de administrador tem permissão para executar esta ação")
+    @SecurityMethod(rolesAllowed={ConstantUtils.ADMIN},message="Somente usuários com perfil de <span style='text-decoration:underline;color: blue;font-size='13px'>administrador</span> tem permissão para executar esta ação.")
     public void adicionarPerfil(){
         if(perfisDisponiveis.contains(perfil) || perfisUsuario.contains(perfil)){
             MessagesController.addError("Perfil já existe.");
@@ -102,7 +103,7 @@ public class PerfilMBean implements Serializable{
     }
     
     
-    @SecurityMethod(rolesAllowed=ConstantUtils.ADMIN)
+    @SecurityMethod(rolesAllowed=ConstantUtils.ADMIN,message="Somente o perfil <span style='text-decoration:underline;color: blue;font-size='13px'>admininistrador</span> pode executar está ação.")
     public void actionPicklist(){
          setPerfisDisponiveis(perfis.getSource());
          atualizaPerfilUsuario();
@@ -122,5 +123,19 @@ public class PerfilMBean implements Serializable{
     public String reset() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "home.faces?faces-redirect=true";
+    }
+    
+    @SecurityMethod(rolesAllowed=ConstantUtils.ADMIN,message="Você só poderá executar este metodo se o perfil <span style='text-decoration:underline;color: blue;font-size='13px'>administrador</span> estiver entre os perfis associados.")
+    public void metodoAdministrador(){
+        MessagesController.addInfo("Metodo administrador executado com sucesso");
+    }
+    
+    @SecurityMethod(rolesAllowed={ConstantUtils.USER},message="Você só poderá executar este metodo se o perfil  <span style='text-decoration:underline;color: blue;font-size='13px'>Usuario</span> estiver entre os perfis associados.")
+    public void metodoUsuario(){
+        MessagesController.addInfo("Metodo usuário executado com sucesso");
+    }
+    @SecurityMethod(rolesAllowed={ConstantUtils.ADMIN,ConstantUtils.USER},message="Você só poderá executar este metodo se o perfil <span style='text-decoration:underline;color: blue;font-size='13px'>administrador</span> e/ou <span style='text-decoration:underline;color: blue;font-size='13px'>usuario</span> estiverem entre os perfis associados.")
+    public void metodoAdministradorUsuario(){
+        MessagesController.addInfo("Metodo administrador/usuário executado com sucesso");
     }
 }

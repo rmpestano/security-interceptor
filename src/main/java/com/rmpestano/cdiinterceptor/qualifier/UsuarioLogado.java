@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jsf.conventions.qualifier;
+package com.rmpestano.cdiinterceptor.qualifier;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
