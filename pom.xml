@@ -101,6 +101,7 @@
                 </executions>
             </plugin>
         </plugins>
+        <finalName>cdi-interceptor</finalName>
     </build>
 
 </project>
